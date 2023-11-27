@@ -11,6 +11,16 @@ public class HelloWorld {
             var page = ctx.queryParamAsClass("name", String.class).getOrDefault("World!");
             ctx.result("Hello, " + page + "!");
         });
+        app.get("/courses/{id}", ctx -> {
+            ctx.result("Course ID: " + ctx.pathParam("id"));
+        });
+        app.get("/users/{id}", ctx -> {
+            ctx.result("User ID: " + ctx.pathParam("id"));
+        });
+        app.get("/courses/{courseId}/post/{postId}", ctx -> {
+            ctx.result("Course ID: " + ctx.pathParam("courseId"));
+            ctx.result("Post ID: " + ctx.pathParam("postId"));
+        });
         app.start(7070);
     }
 }
