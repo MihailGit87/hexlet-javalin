@@ -20,10 +20,11 @@ repositories {
 dependencies {
     implementation("io.javalin:javalin:5.6.1")
     implementation("org.slf4j:slf4j-simple:2.0.7")
-    implementation("io.javalin:javalin-rendering:5.6.0")
+    implementation("io.javalin:javalin-rendering:5.6.2")
     implementation("gg.jte:jte:3.0.1")
+    implementation("org.projectlombok:lombok:1.18.28")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
 }
 
 tasks.test {
