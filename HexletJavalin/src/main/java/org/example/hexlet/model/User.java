@@ -7,15 +7,18 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public final class Course {
+public final class User {
     private Long id;
 
     @ToString.Include
     private String name;
-    private String description;
 
-    public Course(String name, String description) {
+    private String email;
+    private String password;
+
+    public User(String name, String email, String password) {
         this.name = name;
-        this.description = description;
+        this.email = email;
+        this.password = password;
     }
 }

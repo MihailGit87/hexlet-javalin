@@ -1,10 +1,14 @@
 package org.example.hexlet;
 
 import io.javalin.Javalin;
+import io.javalin.validation.ValidationException;
+import org.example.hexlet.util.NamedRoutes;
+import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.model.Course;
 import org.example.hexlet.dto.courses.CoursesPage;
+import org.example.hexlet.model.User;
+import org.example.hexlet.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +29,30 @@ public class HelloWorld {
             ctx.contentType("html");
             ctx.result("<h1>" + id + "</h1>");
         });
+        app.get(NamedRoutes.buildUserPath(), ctx -> {
+            var page = new BuildUserPage();
+            ctx.render("users/build.jte", Collections.singletonMap("page", page));
+        });
+        app.post("/users", ctx -> {
+            var name = ctx.formParam("name").trim();
+            var email = ctx.formParam("email").trim().toLowerCase();
+
+            try {
+                var passwordConfirmation = ctx.formParam("passwordConfirmation");
+                var password = ctx.formParamAsClass("password", String.class)
+                        .check(value -> value == passwordConfirmation, "Пароли не совпадают")
+                        .check(value -> value.length() > 6, "У пароля недостаточная длина")
+                        .get();
+                var user = new User(name, email, password);
+                UserRepository.save(user);
+                ctx.redirect("/users");
+            } catch (ValidationException e) {
+                var page = new BuildUserPage(name, email, e.getErrors());
+                ctx.render("users/build.jte", Collections.singletonMap("page", page));
+            }
+        });
+
+
 
 //        app.get("/courses", ctx -> {
 //            List<Course> courses = List.of(new Course("1","1"),new Course("2","1"));
@@ -32,13 +60,13 @@ public class HelloWorld {
 //            var page = new CoursesPage(courses, header);
 //            ctx.render("index.jte", Collections.singletonMap("page", page));
 //        });
-//        app.get("/courses/{id}", ctx -> {
-//            var id = ctx.pathParam("id");
-//            List<Course> courses = List.of(new Course("1","1"),new Course("2","1"));
-//            String header = "";
-//            var page = new CoursesPage(courses, header);
-//            ctx.render("courses/show.jte", Collections.singletonMap("page", page));
-//        });
+        app.get("/courses/{id}", ctx -> {
+            var id = ctx.pathParam("id");
+            List<Course> courses = List.of(new Course("1","1"),new Course("2","1"));
+            String header = "";
+            var page = new CoursesPage(courses, header);
+            ctx.render("courses/show.jte", Collections.singletonMap("page", page));
+        });
 
 //        app.get("/courses", ctx -> {
 //            var term = ctx.queryParam("term");
