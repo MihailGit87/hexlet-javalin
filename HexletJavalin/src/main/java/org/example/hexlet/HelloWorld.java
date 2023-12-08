@@ -2,6 +2,7 @@ package org.example.hexlet;
 
 import io.javalin.Javalin;
 import io.javalin.validation.ValidationException;
+import org.example.hexlet.controller.UsersController;
 import org.example.hexlet.util.NamedRoutes;
 import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.model.Course;
@@ -33,6 +34,16 @@ public class HelloWorld {
             var page = new BuildUserPage();
             ctx.render("users/build.jte", Collections.singletonMap("page", page));
         });
+
+        app.get("/users", UsersController::index);
+        app.get("/users/{id}", UsersController::show);
+        app.get("/users/build", UsersController::build);
+        app.post("/users", UsersController::create);
+        app.get("/users/{id}/edit", UsersController::edit);
+        app.patch("/users/{id}", UsersController::update);
+        app.delete("/users", UsersController::destroy);
+
+
         app.post("/users", ctx -> {
             var name = ctx.formParam("name").trim();
             var email = ctx.formParam("email").trim().toLowerCase();
@@ -52,14 +63,13 @@ public class HelloWorld {
             }
         });
 
-
-
 //        app.get("/courses", ctx -> {
 //            List<Course> courses = List.of(new Course("1","1"),new Course("2","1"));
 //            String header = "Курсы по программированию";
 //            var page = new CoursesPage(courses, header);
 //            ctx.render("index.jte", Collections.singletonMap("page", page));
 //        });
+
         app.get("/courses/{id}", ctx -> {
             var id = ctx.pathParam("id");
             List<Course> courses = List.of(new Course("1","1"),new Course("2","1"));
