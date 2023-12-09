@@ -3,6 +3,7 @@ package org.example.hexlet;
 import io.javalin.Javalin;
 import io.javalin.validation.ValidationException;
 import org.example.hexlet.controller.UsersController;
+import org.example.hexlet.dto.MainPage;
 import org.example.hexlet.util.NamedRoutes;
 import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.model.Course;
@@ -17,6 +18,13 @@ public class HelloWorld {
     public static void main(String[] args) {
         var app = Javalin.create(config -> config.plugins.enableDevLogging());
         app.get("/", ctx -> ctx.render("index.jte"));
+
+        app.get("/", ctx -> {
+            var visited = Boolean.valueOf(ctx.cookie("visited"));
+            var page = new MainPage(visited);
+            ctx.render("index.jte", Collections.singletonMap("page", page));
+            ctx.cookie("visited", String.valueOf(true));
+        });
 
         app.get("/users", ctx -> ctx.result("GET /users"));
         app.post("/users", ctx -> ctx.result("POST /users"));
