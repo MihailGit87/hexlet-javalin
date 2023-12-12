@@ -1,12 +1,10 @@
-package org.example.hexlet.controller;
+package org.example.controller;
 
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
-import org.example.hexlet.dto.courses.CoursePage;
-import org.example.hexlet.dto.courses.CoursesPage;
-import org.example.hexlet.model.Course;
-import org.example.hexlet.repository.CourseRepository;
-import org.example.hexlet.util.NamedRoutes;
+import org.example.courses.*;
+import org.example.repositories.CourseRepository;
+import org.example.routes.NamedRoutes;
 
 import java.sql.SQLException;
 import java.util.Collections;

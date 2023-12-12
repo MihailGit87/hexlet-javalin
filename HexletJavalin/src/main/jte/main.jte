@@ -1,4 +1,4 @@
-@import org.example.hexlet.dto.MainPage
+@import dto.org.example.MainPage
 @param MainPage page
 
 <!DOCTYPE html>

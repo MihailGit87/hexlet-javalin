@@ -1,4 +1,4 @@
-package org.example.hexlet.model;
+package org.example.courses;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +13,7 @@ public final class Course {
     @ToString.Include
     private String name;
     private String description;
+    private String flash;
 
     public Course(String name, String description) {
         this.name = name;

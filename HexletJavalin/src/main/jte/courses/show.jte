@@ -1,6 +1,6 @@
-<%--@import org.example.hexlet.dto.courses.CoursesPage--%>
+<%--@import courses.dto.org.example.CoursesPage--%>
 <%--@param CoursesPage page--%>
-<%--@import org.example.hexlet.model.Course;--%>
+<%--@import model.org.example.Course;--%>
 
 <%--<!-- Для наглядности мы не стали включать сюда основную структуру HTML -->--%>
 <%--<main>--%>

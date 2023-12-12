@@ -1,4 +1,4 @@
-@import org.example.hexlet.dto.users.BuildUserPage
+@import users.dto.org.example.BuildUserPage
 @param BuildUserPage page
 
 @if(page.getErrors() != null)
