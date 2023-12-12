@@ -1,9 +1,12 @@
 package org.example.hexlet;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import io.javalin.Javalin;
 import io.javalin.validation.ValidationException;
 import org.example.hexlet.controller.UsersController;
 import org.example.hexlet.dto.MainPage;
+import org.example.hexlet.repository.BaseRepository;
 import org.example.hexlet.util.NamedRoutes;
 import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.model.Course;
@@ -11,10 +14,36 @@ import org.example.hexlet.dto.courses.CoursesPage;
 import org.example.hexlet.model.User;
 import org.example.hexlet.repository.UserRepository;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HelloWorld {
+    public static Javalin getApp() throws SQLException, IOException {
+        var hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl("jdbc:h2:mem:hexlet_project;DB_CLOSEDELAY=-1;");
+
+        var dataSource = new HikariDataSource(hikariConfig);
+        var url = HelloWorld.class.getClassLoader().getResource("schema.sql");
+        var file = new File(url.getFile());
+        var sql = Files.lines(file.toPath())
+                        .collect(Collectors.joining("\n"));
+        try (var connection = dataSource.getConnection();
+        var statement = connection.createStatement()){
+            statement.execute(sql);
+        }
+        BaseRepository.dataSource = dataSource;
+
+        var app = Javalin.create(config -> {
+            config.plugins.enableDevLogging();
+        });
+
+    }
+
     public static void main(String[] args) {
         var app = Javalin.create(config -> config.plugins.enableDevLogging());
         app.get("/", ctx -> ctx.render("index.jte"));
